@@ -1,4 +1,5 @@
 using eTickets.Data;
+using eTickets.Data.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,9 +26,14 @@ namespace eTickets
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //DataContext Configuration
+            //DataContext Configuration -Added by Rasika Samith
             services.AddDbContext<AppDbContext>(options=>options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
+            //Services Configuration -Added by Rasika Samith
+            services.AddScoped<IActorService, ActorService>();
+
             services.AddControllersWithViews();
+
+       
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
