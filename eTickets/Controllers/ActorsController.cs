@@ -25,6 +25,7 @@ namespace eTickets.Controllers
             return View(data);
         }
         
+        //Create
         public IActionResult Create()
         {
             return View();
@@ -33,7 +34,8 @@ namespace eTickets.Controllers
         [HttpPost]
         public IActionResult Create([Bind("ProfilePictureURL", "FullName","Bio")]Actor actor)
         {
-            if(ModelState.IsValid)
+            
+            if (ModelState.IsValid)
             {
                 _iActorService.AddAsync(actor);
                 return RedirectToAction(nameof(Index));
@@ -59,38 +61,11 @@ namespace eTickets.Controllers
             }                    
         }
 
-        //public async Task<IActionResult> Edit(int id)
-        //{
-        //    var actorDetails = await _iActorService.GetByIdAsync(id);
-
-        //    if (actorDetails == null)
-        //    {
-        //        return View("NotFound");
-        //    }
-        //    else
-        //    {
-        //        return View(actorDetails);
-        //    }
-        //}
-
-        //[HttpPost]
-        //public IActionResult Edit(int id, [Bind("Id,FullName,ProfilePictureURL,Bio")] Actor actor)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _iActorService.UpdateAsync(id, actor);
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    else
-        //    {
-        //        return View(actor);
-        //    }
-        //}
-
+        //Edit with async
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var actorDetails = _iActorService.GetById(id);
+            var actorDetails = await _iActorService.GetByIdAsync(id);
 
             if (actorDetails == null)
             {
@@ -103,11 +78,11 @@ namespace eTickets.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, [Bind("Id,FullName,ProfilePictureURL,Bio")] Actor actor)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,ProfilePictureURL,Bio")] Actor actor)
         {
             if (ModelState.IsValid)
             {
-                _iActorService.Update(id, actor);
+                await _iActorService.UpdateAsync(id, actor);
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -115,6 +90,36 @@ namespace eTickets.Controllers
                 return View(actor);
             }
         }
+
+        //Edit without async
+        //[HttpGet]
+        //public IActionResult Edit(int id)
+        //{
+        //    var actorDetails = _iActorService.GetByIdAsync(id);
+
+        //    if (actorDetails == null)
+        //    {
+        //        return View("NotFound");
+        //    }
+        //    else
+        //    {
+        //        return View(actorDetails);
+        //    }
+        //}
+
+        //[HttpPost]
+        //public IActionResult Edit(int id,Actor actor)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _iActorService.UpdateAsync(id, actor);
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    else
+        //    {
+        //        return View(actor);
+        //    }
+        //}
 
         //Delete
         public async Task<IActionResult> Delete(int id)
