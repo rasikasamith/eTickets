@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using eTickets.Data;
+using eTickets.Data.Base;
 
 namespace eTickets.Models
 {
-    public class Movie
+    public class Movie: IEntityBase
     {
         [Key]
         public int Id { get; set; }

@@ -12,7 +12,9 @@ namespace eTickets.Data.Services
     {
         //private readonly AppDbContext _dbContext;
 
-        public ActorService(AppDbContext appDbContext) : base(appDbContext) { }   //Pass appDbContext to the base class
+        public ActorService(AppDbContext appDbContext) : base(appDbContext) //Pass appDbContext to the base class
+        { 
+        }   
 
 
         //public async Task AddAsync(Actor actor)
