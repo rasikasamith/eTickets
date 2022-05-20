@@ -117,5 +117,18 @@ namespace eTickets.Controllers
             }
         }
 
+        public async Task<ActionResult> Filter(string searchString)
+        {
+            var allMovies =await _iMoviesService.GetAllAsync(x=>x.Cinema);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                var fillterdMovie = allMovies.Where(x => x.Name.Contains(searchString)||x.Description.Contains(searchString)).ToList();
+                return View("Index", fillterdMovie);
+            }
+            return View("Index", allMovies);
+        }
+
+
     }
 }

@@ -31,6 +31,11 @@ namespace eTickets.Data
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Producer> Producers { get; set; }
 
+        //Orders related tables
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+
         //
         //var connectionString = "Server=Rasika-NoteBook\\SQLEXPRESS;Database=ecommerce-app-db;User=sa; Password=sa@123;";
     }
