@@ -19,7 +19,7 @@ namespace eTickets.Data.Cart
         {
             _appDbContext = appDbContext;
         }
-
+         
         public static ShoppingCart GetShoppingCart(IServiceProvider services)
         {
             ISession session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext.Session;
@@ -78,6 +78,13 @@ namespace eTickets.Data.Cart
         {
             var total = _appDbContext.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).Select(n => n.Movie.Price * n.Amount).Sum();
             return total;
+        }
+
+        public async Task ClearShoppingCartAsync()
+        {
+            var items =await _appDbContext.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).ToListAsync();
+            _appDbContext.ShoppingCartItems.RemoveRange(items);
+            await _appDbContext.SaveChangesAsync();
         }
 
     }
