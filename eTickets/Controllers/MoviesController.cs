@@ -1,7 +1,9 @@
 ﻿using eTickets.Data;
 using eTickets.Data.Services;
+using eTickets.Data.Static;
 using eTickets.Data.ViewModels;
 using eTickets.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace eTickets.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class MoviesController : Controller
     {
         private readonly IMoviesService _iMoviesService;
@@ -20,7 +23,7 @@ namespace eTickets.Controllers
         {
             _iMoviesService = iMoviesService;
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
            // var data=await _context.Movies.Include(m=>m.Cinema).Include(a=>a.Actors_Movies).OrderBy(x=>x.Name).ToListAsync();
@@ -28,8 +31,8 @@ namespace eTickets.Controllers
             return View(data);
         }
 
+        [AllowAnonymous]
         //GET:Movies/Details/1
-
         public async Task<ActionResult> Details(int id) 
         {
            var data=await _iMoviesService.GetMovieByIdAsync(id);
@@ -117,14 +120,20 @@ namespace eTickets.Controllers
             }
         }
 
+        [AllowAnonymous]
         public async Task<ActionResult> Filter(string searchString)
         {
             var allMovies =await _iMoviesService.GetAllAsync(x=>x.Cinema);
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                var fillterdMovie = allMovies.Where(x => x.Name.Contains(searchString)||x.Description.Contains(searchString)).ToList();
-                return View("Index", fillterdMovie);
+                //Method 1
+                //var fillterdMovie = allMovies.Where(x => x.Name.ToLower().Contains(searchString.ToLower())||x.Description.ToLower().Contains(searchString.ToLower())).ToList();
+
+                //Method 2
+                var fillterdMovieNew = allMovies.Where(x => string.Equals(x.Name, searchString, StringComparison.CurrentCultureIgnoreCase)||string.Equals(x.Description,searchString,StringComparison.CurrentCultureIgnoreCase));
+
+                return View("Index", fillterdMovieNew);
             }
             return View("Index", allMovies);
         }
